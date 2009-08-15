@@ -36,54 +36,57 @@ sub msgs {
 }
 
 sub contains_ok {
-    my ( $self, $regex, $name ) = @_;
+    my ( $self, $regex, $test_name ) = @_;
 
     my $found = first_index { $_->{message} =~ /$regex/ } @{ $self->msgs };
     if ( $found != -1 ) {
         splice( @{ $self->msgs }, $found, 1 );
-        $tb->ok( 1, "found message matching $regex" );
+        $tb->ok( 1, $test_name );
     }
     else {
-        $tb->ok( 0,
-            "could not find message matching $regex; log contains: "
+        $tb->ok( 0, $test_name );
+        $tb->diag( "could not find message matching $regex; log contains: "
               . _dump_one_line( $self->msgs ) );
     }
 }
 
 sub does_not_contain_ok {
-    my ( $self, $regex, $name ) = @_;
+    my ( $self, $regex, $test_name ) = @_;
 
     my $found = first_index { $_->{message} =~ /$regex/ } @{ $self->msgs };
     if ( $found != -1 ) {
-        $tb->ok( 0, "found message matching $regex: " . $self->msgs->[$found] );
+        $tb->ok( 0, $test_name );
+        $tb->diag( "found message matching $regex: " . $self->msgs->[$found] );
     }
     else {
-        $tb->ok( 1, "could not find message matching $regex" );
+        $tb->ok( 1, $test_name );
     }
 }
 
 sub empty_ok {
-    my ($self) = @_;
+    my ( $self, $test_name ) = @_;
 
     if ( !@{ $self->msgs } ) {
-        $tb->ok( 1, "log is empty" );
+        $tb->ok( 1, $test_name );
     }
     else {
-        $tb->ok( 0,
+        $tb->ok( 0, $test_name );
+        $tb->diag(
             "log is not empty; contains " . _dump_one_line( $self->msgs ) );
     }
 }
 
 sub contains_only_ok {
-    my $self = shift;
+    my ( $self, $regex, $test_name ) = @_;
 
     my $count = scalar( @{ $self->msgs } );
     if ( $count == 1 ) {
         local $Test::Builder::Level = $Test::Builder::Level + 1;
-        $self->contains_ok(@_);
+        $self->contains_ok( $regex, $test_name );
     }
     else {
-        $tb->ok( 0, "log contains $count messages" );
+        $tb->ok( 0, $test_name );
+        $tb->diag("log contains $count messages");
     }
 }
 
@@ -144,21 +147,21 @@ to override the default 'debug'.
 
 =over
 
-=item contains_ok ($regex)
+=item contains_ok ($regex, $test_name)
 
 Tests that a message in the log buffer matches I<$regex>. On success, the
 message is I<removed> from the log buffer (but any other matches are left
 untouched).
 
-=item does_not_contain_ok ($regex)
+=item does_not_contain_ok ($regex, $test_name)
 
 Tests that no message in the log buffer matches I<$regex>.
 
-=item empty_ok ()
+=item empty_ok ($test_name)
 
 Tests that there is no log buffer left.
 
-=item contains_only_ok ($regex)
+=item contains_only_ok ($regex, $test_name)
 
 Tests that there is a single message in the log buffer and it matches
 I<$regex>. On success, the message is removed.
