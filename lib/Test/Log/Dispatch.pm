@@ -179,6 +179,16 @@ each element is a hash containing a I<message> and I<level> key.
 
 =back
 
+=head1 TO DO
+
+=over
+
+=item *
+
+Allow testing of log levels.
+
+=back    
+
 =head1 SEE ALSO
 
 L<Log::Dispatch|Log::Dispatch>, L<Test::Log4perl|Test::Log4perl>
