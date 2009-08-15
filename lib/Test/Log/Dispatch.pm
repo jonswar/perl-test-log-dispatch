@@ -118,6 +118,8 @@ Test::Log::Dispatch -- Test what you are logging
     # call something that logs to $log
     # ...
 
+    # now test to make sure you logged the right things
+
     $log->contains_ok(qr/good log message/);
     $log->does_not_contain_ok(qr/unexpected log message/);
     $log->empty_ok();
@@ -129,7 +131,7 @@ Test::Log::Dispatch -- Test what you are logging
 
 =head1 DESCRIPTION
 
-C<Test::Log::Dispatch> creates a C<Log::Dispatch> object that keeps track of
+C<Test::Log::Dispatch> is a C<Log::Dispatch> object that keeps track of
 everything logged to it in memory, and provides convenient tests against what
 has been logged.
 
