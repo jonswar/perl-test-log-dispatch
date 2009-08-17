@@ -1,7 +1,6 @@
 #!perl
 use Test::Tester tests => 45;
 use Test::More;
-use Data::Dump qw(dump);
 use Test::Log::Dispatch;
 use strict;
 use warnings;
