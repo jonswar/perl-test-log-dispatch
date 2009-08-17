@@ -7,7 +7,7 @@ use strict;
 use warnings;
 use base qw(Log::Dispatch);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my $tb = Test::Builder->new();
 
