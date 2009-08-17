@@ -40,6 +40,7 @@ sub msgs {
 sub contains_ok {
     my ( $self, $regex, $test_name ) = @_;
 
+    $test_name ||= "log contains '$regex'";
     my $found = first_index { $_->{message} =~ /$regex/ } @{ $self->msgs };
     if ( $found != -1 ) {
         splice( @{ $self->msgs }, $found, 1 );
@@ -55,6 +56,7 @@ sub contains_ok {
 sub does_not_contain_ok {
     my ( $self, $regex, $test_name ) = @_;
 
+    $test_name ||= "log does not contain '$regex'";
     my $found = first_index { $_->{message} =~ /$regex/ } @{ $self->msgs };
     if ( $found != -1 ) {
         $tb->ok( 0, $test_name );
@@ -68,6 +70,7 @@ sub does_not_contain_ok {
 sub empty_ok {
     my ( $self, $test_name ) = @_;
 
+    $test_name ||= "log is empty";
     if ( !@{ $self->msgs } ) {
         $tb->ok( 1, $test_name );
     }
@@ -81,6 +84,7 @@ sub empty_ok {
 sub contains_only_ok {
     my ( $self, $regex, $test_name ) = @_;
 
+    $test_name ||= "log contains only '$regex'";
     my $count = scalar( @{ $self->msgs } );
     if ( $count == 1 ) {
         local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -122,9 +126,9 @@ Test::Log::Dispatch -- Test what you are logging
 
     # now test to make sure you logged the right things
 
-    $log->contains_ok(qr/good log message/);
-    $log->does_not_contain_ok(qr/unexpected log message/);
-    $log->empty_ok();
+    $log->contains_ok(qr/good log message/, "good message was logged");
+    $log->does_not_contain_ok(qr/unexpected log message/, "unexpected message was not logged");
+    $log->empty_ok("no more logs");
 
     # or
 
@@ -149,23 +153,26 @@ to override the default 'debug'.
 
 =head1 METHODS
 
+The test_name is optional in the *_ok methods; a reasonable default will be
+provided.
+
 =over
 
-=item contains_ok ($regex, $test_name)
+=item contains_ok ($regex[, $test_name])
 
 Tests that a message in the log buffer matches I<$regex>. On success, the
 message is I<removed> from the log buffer (but any other matches are left
 untouched).
 
-=item does_not_contain_ok ($regex, $test_name)
+=item does_not_contain_ok ($regex[, $test_name])
 
 Tests that no message in the log buffer matches I<$regex>.
 
-=item empty_ok ($test_name)
+=item empty_ok ([$test_name])
 
 Tests that there is no log buffer left.
 
-=item contains_only_ok ($regex, $test_name)
+=item contains_only_ok ($regex[, $test_name])
 
 Tests that there is a single message in the log buffer and it matches
 I<$regex>. On success, the message is removed.
