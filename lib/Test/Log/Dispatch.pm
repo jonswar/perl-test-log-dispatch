@@ -78,6 +78,7 @@ sub empty_ok {
         $tb->ok( 0, $test_name );
         $tb->diag(
             "log is not empty; contains " . _dump_one_line( $self->msgs ) );
+        $self->clear();
     }
 }
 
@@ -92,7 +93,8 @@ sub contains_only_ok {
     }
     else {
         $tb->ok( 0, $test_name );
-        $tb->diag("log contains $count messages");
+        $tb->diag(
+            "log contains $count messages: " . _dump_one_line( $self->msgs ) );
     }
 }
 
@@ -170,7 +172,8 @@ Tests that no message in the log buffer matches I<$regex>.
 
 =item empty_ok ([$test_name])
 
-Tests that there is no log buffer left.
+Tests that there is no log buffer left. On failure, the log buffer is cleared
+to limit further cascading failures.
 
 =item contains_only_ok ($regex[, $test_name])
 

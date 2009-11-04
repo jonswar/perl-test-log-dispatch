@@ -4,6 +4,8 @@ Revision history for Test-Log-Dispatch
 
 0.03  Aug 17, 2009
 
+- Clear log buffer after empty_ok failure
+
 0.02  Aug 17, 2009
 
 - Provide default test names
