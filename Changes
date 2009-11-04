@@ -2,7 +2,7 @@ Revision history for Test-Log-Dispatch
 
 ** denotes an incompatible change
 
-0.03  Aug 17, 2009
+0.03  Nov 4, 2009
 
 - Clear log buffer after empty_ok failure
 
