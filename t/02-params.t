@@ -6,7 +6,7 @@ use warnings;
 
 # Any parameters will be forwarded to the Log::Dispatch::Array constructor.
 #
-my $log = Test::Log::Dispatch->new(min_level => 'warning');
+my $log = Test::Log::Dispatch->new( min_level => 'warning' );
 $log->debug('debug message');
 $log->info('info message');
 $log->warning('warning message');
